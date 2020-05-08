@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="mobile-web-app-capable" content="yes">
+        
+        
+        <meta name="description" content="Введение в git, deploy ML models">
+        
+        <title>Flask ML API - HackMD</title>
+        <link rel="icon" type="image/png" href="https://hackmd.io/favicon.png">
+        <link rel="apple-touch-icon" href="https://hackmd.io/apple-touch-icon.png">
+        
+<script nonce="19a498ee-e5e6-4f64-b2cd-8322d3da6648">
+window.domain = 'hackmd.io'
+window.urlpath = ''
+window.debug = false
+window.version = '1.3.0'
+window.brand = 'HackMD'
+
+window.GOOGLE_API_KEY = 'AIzaSyCjSrqWHhmWJnoI7JlD88XDSaBgiKbaenA'
+window.GOOGLE_CLIENT_ID = '911617723593-drikdibvvn63slfd6kbqigo8ql1no55s.apps.googleusercontent.com'
+window.DROPBOX_APP_KEY = 'rdoizrlnkuha23r'
+
+
+window.ASSET_URL = 'https://assets.hackmd.io'
+
+window.USER_CAN_CREATE_TEAM = true
+window.PAYMENT_ENABLED = true
+window.FREE_TEAM_NUM = 3
+window.FREE_TEAM_MEMBER_NUM = 3
+window.FREE_PUBLIC_TEAM_NUM = 10
+
+window.ALLOW_ANONYMOUS = true
+window.PUBLIC_OVERVIEW = false
+window.INTERNAL_PUBLIC_OVERVIEW = false
+
+
+
+
+
+
+
+window.USE_CDN = false
+
+
+
+
+
+</script>
+
+
+        
+<!-- Google Tag Manager -->
+<script nonce="19a498ee-e5e6-4f64-b2cd-8322d3da6648">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KLW9Z3');</script>
+<!-- End Google Tag Manager -->
+
+
+        <meta property="fb:app_id" content="1436904003272070">
+
+<meta name="twitter:image:src" content="https://lh3.googleusercontent.com/a-/AAuE7mD_vWrR1bEEpB2wzwQ76ts-RYinKy5FglFwlb3_jZo" />
+
+<meta name="twitter:site" content="@hackmdio" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Flask ML API - HackMD" />
+
+<meta name="twitter:description" content="Введение в git, deploy ML models" />
+
+
+<meta property="og:image" content="https://lh3.googleusercontent.com/a-/AAuE7mD_vWrR1bEEpB2wzwQ76ts-RYinKy5FglFwlb3_jZo" />
+
+<meta property="og:site_name" content="HackMD" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Flask ML API - HackMD" />
+
+<meta property="og:description" content="Введение в git, deploy ML models" />
+
+
+
+        
+        <link rel="stylesheet" href="https://assets.hackmd.io/build/reveal.js/css/reveal.css">
+        <link rel="stylesheet" href='https://assets.hackmd.io/build/emojify.js/dist/css/basic/emojify.min.css'>
+         <link href="https://assets.hackmd.io/build/font-vendor.b86e2bf451b246b1a88e.css" rel="stylesheet"><link href="https://assets.hackmd.io/build/common-vendor.b8ecfc406ac0b5f77a26.css" rel="stylesheet"><link href="https://assets.hackmd.io/build/slide-vendor.69891338bef7e9b58324.css" rel="stylesheet"><link href="https://assets.hackmd.io/build/slide.5b8dd7db7e45294cfc6e.css" rel="stylesheet">
+        
+
+        <!-- style-loader will insert style before this div in development -->
+        <!-- This prevents overwriting reveal.js theme css -->
+        <meta id="style-tag-insertion">
+
+        <!-- For reveal.js theme -->
+        
+        <link rel="stylesheet" href="https://assets.hackmd.io/build/reveal.js/css/theme/white.css" id="theme">
+        
+        <!-- For overwrite reveal.js -->
+        <link rel="stylesheet" href="https://hackmd.io/build/slide.css">
+
+        <!-- Printing and PDF exports -->
+		<script nonce="19a498ee-e5e6-4f64-b2cd-8322d3da6648">
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+            link.href = 'https://assets.hackmd.io/build/reveal.js/' + (window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css');
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js" integrity="sha256-3Jy/GbSLrg0o9y5Z5n1uw0qxZECH7C6OQpVBgNFYa0g=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js" integrity="sha256-g6iAfvZp+nDQ2TdTR/VVKJf3bGro4ub5fvWSWVRi2NE=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.9/es5-shim.min.js" integrity="sha256-8E4Is26QH0bD52WoQpcB+R/tcWQtpzlCojrybUd7Mxo=" crossorigin="anonymous"></script>
+<![endif]-->
+
+    </head>
+    <body>
+        <div class="container" data-hard-breaks="true">
+            <div class="reveal">
+                <div class="slides" style="display: none;">
+
+## Деплой моделей машинного обучения
+
+---
+
+## A typical ML workflow
+
+&lt;img src=&#34;https://i.imgur.com/dVasgK9.png&#34; style=&#34;background:none; border:none; box-shadow:none;&#34;&gt;
+
+
+---
+
+## API JSON
+
+&lt;img src=&#34;https://i.imgur.com/OAmBZn2.png&#34; style=&#34;background:none; border:none; box-shadow:none;&#34;   width=&#34;843&#34;
+     height=&#34;507&#34;&gt;
+
+---
+
+### JSON
+
+&lt;p style=&#39;text-align: justify; font-size: 25pt&#39;&gt;
+JSON (JavaScript Object Notation) - простой формат обмена данными, удобный для чтения и написания как человеком, так и компьютером.
+&lt;/p&gt;
+
+![Imgur](https://i.imgur.com/ZsE380O.jpg)
+
+---
+
+### Создание проекта
+
+- Pycharm
+- venv
+- версия python и requirements.txt
+
+---
+
+### Web-фреймворк для API
+
+
+&lt;img src=&#34;https://i.imgur.com/pcJDuUM.png&#34; style=&#34;background:none; border:none; box-shadow:none;&#34;&gt;
+
+---
+
+### Обработка ошибок
+
+
+---
+
+### Логгирование
+
+---
+
+### Тестирование 
+
+По уровню тестирование бывает:
+&lt;div style=&#39;text-align: justify; font-size: 25pt&#39;&gt;
+&lt;ul&gt;
+&lt;li&gt;Модульное / юнит-тестирование – проверка корректной работы отдельных единиц ПО. Этот вид тестирования могут выполнять сами разработчики.&lt;/li&gt;
+&lt;li&gt;Интеграционное тестирование – проверка взаимодействия между несколькими единицами ПО.&lt;/li&gt;
+&lt;li&gt;Системное – проверка работы всей системы на соответствие заявленным требованиям к программному продукту.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+---
+
+### Модульное тестирование
+
+Фреймворк PyTest
+
+```shell
+python -m pytest -vv
+```
+
+---
+
+### Пример работы с фронт-системой
+
+---
+
+### Production server
+
+&lt;img src=&#34;https://i.imgur.com/au1279Y.jpg&#34; style=&#34;background:none; border:none; box-shadow:none;&#34;&gt;
+
+---
+
+### Gunicorn
+
+&lt;p style=&#39;text-align: justify; font-size: 25pt&#39;&gt;Gunicorn &#39;Green Unicorn&#39; is a Python WSGI HTTP Server for UNIX.&lt;/p&gt;
+
+```shell
+gunicorn -w 4 -b 127.0.0.1:5000 app:app
+```
+
+---
+
+### Тестирование производительности 
+
+ab - Apache HTTP server benchmarking tool
+
+```shell
+ab -c 100 -n 1000 http://127.0.0.1:5000/
+
+```
+&lt;div style=&#39;text-align: justify; font-size: 25pt&#39;&gt;
+-c concurrency - количество параллельных запросов в единицу времени.&lt;br&gt;
+-n requests - количество запросов, которое необходимо выполнить в течение сессии тестирования.
+&lt;/div&gt;
+
+---
+
+### Deploy to Heroku
+
+Procfile:
+```shell
+web: gunicorn app:app
+```
+
+
+Buildpacks:
+```shell
+heroku/python
+https://github.com/heroku/heroku-buildpack-jvm-common.git
+```
+
+---
+
+
+### gRPC
+
+&lt;div style=&#39;text-align: justify; font-size: 25pt&#39;&gt;
+gRPC - это высокопроизводительный фреймворк разработанный компанией Google для вызов удаленных процедур (RPC), работает поверх HTTP/2.
+&lt;br&gt;&lt;br&gt;
+Protobuf - формат сериализации, использует строгую типизацию полей и бинарный формат для передачи  и данных потребляет значительно меньше ресурсов чем JSON.
+&lt;/div&gt;
+
+
+---
+
+## Thank you</div>
+            </div>
+
+            <div id="meta" style="display: none;">{&#34;title&#34;:&#34;Flask ML API&#34;,&#34;tags&#34;:&#34;Flask, Geekbrains&#34;,&#34;description&#34;:&#34;Введение в git, deploy ML models&#34;,&#34;slideOptions&#34;:{&#34;transition&#34;:&#34;none&#34;,&#34;progress&#34;:false,&#34;slideNumber&#34;:true,&#34;theme&#34;:&#34;white&#34;}}</div>
+
+            <div class="footer">
+                <div class="unselectable hidden-print" style="color: #777; line-height: 22px;">
+                    <small>
+                        <span>
+                            
+                                <span class="ui-lastchangeuser" data-profile="AndreyPhys">&thinsp;<a class="ui-user-icon small" style="background-image: url(https://lh3.googleusercontent.com/a-/AAuE7mD_vWrR1bEEpB2wzwQ76ts-RYinKy5FglFwlb3_jZo);" target="_blank"></a></span>
+                            
+                            &nbsp;<span class="text-uppercase ui-status-lastchange"></span>
+                            <span class="ui-lastchange text-uppercase" data-createtime="Fri Apr 17 2020 12:26:48 GMT+0000 (UTC)" data-updatetime="Sun May 03 2020 19:26:36 GMT+0000 (UTC)"></span>
+                        </span>
+                        <span class="pull-right">
+                            81 views
+                            <a href="#" class="ui-edit" title="Edit this note">
+                                <i class="fa fa-fw fa-pencil"></i>
+                            </a>
+                            <a href="#" class="ui-print" title="Print slide">
+                                <i class="fa fa-fw fa-print"></i>
+                            </a>
+                        </span>
+                        <br>
+                        
+                        
+                    </small>
+                </div>
+                
+            </div>
+        </div>
+
+        
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-60728495-1"></script>
+<script nonce="19a498ee-e5e6-4f64-b2cd-8322d3da6648">
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    let userid = (document.cookie.match('(^|; )userid=([^;]*)')||0)[2];
+    gtag('config', 'UA-60728495-1', {'user_id': userid});
+</script>
+<script src="https://browser.sentry-cdn.com/4.5.4/bundle.min.js" crossorigin="anonymous"></script>
+<script nonce="19a498ee-e5e6-4f64-b2cd-8322d3da6648">Sentry.init({ dsn: 'https://b1ed86878f414ccc832dc0f63ffe2daa@sentry.io/121416', integrations: function (intrus) { return intrus.filter(function (itr) { return itr.name !== 'TryCatch' }) } });</script>
+
+
+        
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KLW9Z3"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+        <script src="https://hackmd.io/api/i18n.js"></script>
+        
+         <script src="https://assets.hackmd.io/build/font-vendor.3c28db3001b8bd6f1d3f.js" defer="defer"></script><script src="https://assets.hackmd.io/build/common-vendor.8e4f4d6aba4d3616fff5.js" defer="defer"></script><script src="https://assets.hackmd.io/build/slide-vendor.f09fbd1223691f32aa6a.js" defer="defer"></script><script src="https://assets.hackmd.io/build/slide-common.21039c59e410b7d621c4.js" defer="defer"></script><script src="https://assets.hackmd.io/build/slide.7aeef8f6ee1dd1472a91.js" defer="defer"></script>
+        
+    </body>
+</html>
+
+
+
